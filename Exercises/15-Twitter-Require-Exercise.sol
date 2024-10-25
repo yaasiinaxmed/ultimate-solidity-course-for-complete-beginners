@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.0;
 
-// 1️⃣  Use require to limit the length of the tweet to be only 280 characters
+// 1️⃣  Use require to limit the length of the tweet to be only 280 characters: Done
 // HINT: use bytes to length of tweet
 
 contract Twitter {
@@ -20,7 +20,7 @@ contract Twitter {
     function createTweet(string memory _tweet) public {
         // conditional
         // if tweet length <= 280 then we are good, otherwise we revert
-        
+        require(bytes(_tweet).length <= 280, "Tweet is too long bro!");
 
         Tweet memory newTweet = Tweet({
             author: msg.sender,
