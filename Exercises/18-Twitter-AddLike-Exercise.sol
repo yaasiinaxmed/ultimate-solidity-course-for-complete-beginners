@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-// 1️⃣ Add id to Tweet Struct to make every Tweet Unique
-// 2️⃣ Set the id to be the Tweet[] length 
+// 1️⃣ Add id to Tweet Struct to make every Tweet Unique: Done
+// 2️⃣ Set the id to be the Tweet[] length: Done
 // HINT: you do it in the createTweet function
-// 3️⃣ Add a function to like the tweet
+// 3️⃣ Add a function to like the tweet: Done
 // HINT: there should be 2 parameters, id and author
-// 4️⃣ Add a function to unlike the tweet
+// 4️⃣ Add a function to unlike the tweet: Done
 // HINT: make sure you can unlike only if likes count is greater then 0
-// 4️⃣ Mark both functions external
+// 4️⃣ Mark both functions external: Done
 
 pragma solidity ^0.8.0;
 
@@ -16,6 +16,7 @@ contract Twitter {
     uint16 public MAX_TWEET_LENGTH = 280;
 
     struct Tweet {
+        uint256 id;
         address author;
         string content;
         uint256 timestamp;
@@ -41,6 +42,7 @@ contract Twitter {
         require(bytes(_tweet).length <= MAX_TWEET_LENGTH, "Tweet is too long bro!" );
 
         Tweet memory newTweet = Tweet({
+            id: tweets[msg.sender].length,
             author: msg.sender,
             content: _tweet,
             timestamp: block.timestamp,
@@ -48,6 +50,19 @@ contract Twitter {
         });
 
         tweets[msg.sender].push(newTweet);
+    }
+
+    function likeTweet(address author, uint256 id) external {
+        require(tweets[author][id].id == id, "Tweet does not exist!");
+
+        tweets[author][id].likes++;
+    }
+
+    function unLikeTweet(address author, uint256 id) external {
+        require(tweets[author][id].id == id, "Tweet does not exist!");
+        require(tweets[author][id].likes > 0, "Tweet has no likes!");
+
+        tweets[author][id].likes--;
     }
 
     function getTweet( uint _i) public view returns (Tweet memory) {
